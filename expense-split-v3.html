@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pigeon Forge 2026 — Expense Split</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f4f7fe;--surface:#fff;--primary:#1e1b4b;--accent:#6366f1;--accent-soft:#e0e7ff;--green:#10b981;--green-soft:#d1fae5;--red:#ef4444;--red-soft:#fee2e2;--amber:#f59e0b;--text:#0f172a;--text-2:#475569;--text-3:#94a3b8;--border:#e2e8f0;--shadow:0 4px 24px rgba(15,23,42,0.08);--radius:20px;--radius-sm:14px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.container{max-width:560px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 60%,#4338ca 100%);color:#fff;position:relative;overflow:hidden;padding:36px 20px 32px;text-align:center}
+.hero::before{content:'';position:absolute;top:-60%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(99,102,241,0.45) 0%,transparent 65%),radial-gradient(ellipse at 70% 20%,rgba(168,85,247,0.3) 0%,transparent 55%);pointer-events:none}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:0.55;margin-bottom:10px;position:relative}
+.hero-title{font-size:28px;font-weight:900;line-height:1.1;margin-bottom:8px;position:relative;text-shadow:0 2px 20px rgba(0,0,0,0.2)}
+.hero-meta{font-size:13px;opacity:0.65;margin-bottom:22px;position:relative}
+.hero-total{display:inline-flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.13);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.2);border-radius:28px;padding:18px 40px;margin-bottom:20px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,0.25)}
+.ht-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.6;margin-bottom:4px}
+.ht-amount{font-size:56px;font-weight:900;line-height:1;letter-spacing:-2px;text-shadow:0 2px 10px rgba(255,255,255,0.3)}
+.ht-sub{font-size:11px;opacity:0.6;margin-top:4px}
+.hero-pills{display:flex;justify-content:center;gap:10px;position:relative;flex-wrap:wrap}
+.hp{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:7px 16px;font-size:12px;font-weight:600;opacity:0.85}
+.hp span{opacity:0.6;font-weight:400}
+.tab-bar{display:flex;background:var(--surface);border-radius:var(--radius);padding:5px;gap:4px;margin:16px 0;box-shadow:var(--shadow);position:sticky;top:8px;z-index:100}
+.tab-btn{flex:1;padding:11px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--text-3);border:none;background:none;cursor:pointer;border-radius:calc(var(--radius) - 4px);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;justify-content:center;gap:6px}
+.tab-btn:hover{color:var(--text-2);background:rgba(99,102,241,0.05)}
+.tab-btn.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(30,27,75,0.3)}
+.panel{display:none;animation:fadeUp 0.3s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--surface);border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.card-title{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-3);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.summary-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.sum-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px 12px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 8px rgba(15,23,42,0.05)}
+.sum-icon{font-size:22px;margin-bottom:6px}
+.sum-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);display:block}
+.sum-val{font-size:19px;font-weight:900;color:var(--text);margin-top:4px}
+.age-rule{background:var(--accent-soft);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px;display:flex;gap:14px;align-items:center}
+.ar-icon{font-size:30px;flex-shrink:0}
+.ar-text{font-size:11.5px;color:var(--text-2);line-height:1.7}
+.ar-text strong{color:var(--primary)}
+.family-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.family-card{border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border);background:var(--surface);transition:transform 0.2s,box-shadow 0.2s}
+.family-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,0.1)}
+.family-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.family-icon{font-size:24px}
+.family-name{font-size:12px;font-weight:800;color:var(--text)}
+.family-members{font-size:10px;color:var(--text-3);margin-top:2px;line-height:1.4}
+.family-breakdown{background:rgba(15,23,42,0.03);border-radius:10px;padding:9px;font-size:10px;line-height:1.75;color:var(--text-2)}
+.fb-row{display:flex;justify-content:space-between;padding:1px 0}
+.fb-row .r{font-weight:600}
+.family-footer{border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:10px;font-weight:800}
+.net-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.net-card{border-radius:var(--radius-sm);padding:18px 14px;text-align:center;border:2px solid;transition:transform 0.2s,box-shadow 0.2s}
+.net-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.net-card.positive{border-color:var(--green);background:linear-gradient(145deg,#f0fdf4,#dcfce7)}
+.net-card.negative{border-color:var(--red);background:linear-gradient(145deg,#fef2f2,#fee2e2)}
+.net-avatar{width:52px;height:52px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,0.08);background:#fff}
+.net-name{font-size:13px;font-weight:800;color:var(--text)}
+.net-amount{font-size:26px;font-weight:900;margin:6px 0 4px}
+.positive .net-amount{color:#059669}
+.negative .net-amount{color:#dc2626}
+.net-status{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:100px;display:inline-block}
+.positive .net-status{background:var(--green-soft);color:#065f46}
+.negative .net-status{background:var(--red-soft);color:#991b1b}
+.full-span{grid-column:span 2}
+.full-span .net-card{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 18px}
+.full-span .net-avatar{margin:0;width:42px;height:42px;font-size:24px;flex-shrink:0}
+.full-span .net-info{flex:1}
+.full-span .net-amount{margin:0;font-size:22px}
+.full-span .net-status{margin-left:auto;flex-shrink:0}
+.math-card{background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(15,23,42,0.05)}
+.math-row{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.math-row:last-child{margin-bottom:0}
+.math-icon{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.math-text{font-size:12px;color:var(--text-2);line-height:1.7;flex:1}
+.math-text strong{color:var(--text)}
+.fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.fs-card{border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);background:var(--surface)}
+.fs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.fs-name{font-size:12px;font-weight:800}
+.fs-tag{font-size:9px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:100px}
+.fs-tag.green{background:var(--green-soft);color:#065f46}
+.fs-tag.red{background:var(--red-soft);color:#991b1b}
+.fs-lines{font-size:10px;line-height:1.9;color:var(--text-2)}
+.fs-total{border-top:1px solid var(--border);margin-top:8px;padding-top:8px;font-size:11px;font-weight:800;display:flex;flex-direction:column;gap:2px}
+.info-note{background:var(--surface);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.info-note.amber{border-left-color:var(--amber)}
+.info-note-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.info-note-body{font-size:11px;color:var(--text-2);line-height:1.6}
+.step-card{border-radius:var(--radius-sm);padding:18px;margin-bottom:12px;border:2px solid var(--border);background:var(--surface);transition:all 0.25s ease}
+.step-card:hover{border-color:var(--accent);box-shadow:0 6px 24px rgba(99,102,241,0.1)}
+.step-header{display:flex;align-items:center;margin-bottom:10px;gap:10px}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.step-title{font-size:16px;font-weight:800;color:var(--text)}
+.step-sub{font-size:11.5px;color:var(--text-3);line-height:1.5;margin-bottom:14px}
+.money-transfer{display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.03);border-radius:12px;padding:12px 14px;margin-bottom:6px}
+.mt-person{text-align:center;flex:1}
+.mt-name{font-size:13px;font-weight:800}
+.mt-name.frm{color:var(--red)}
+.mt-name.to{color:var(--green)}
+.mt-sub{font-size:9px;color:var(--text-3);margin-top:2px}
+.mt-arrow{font-size:24px;color:var(--accent);flex-shrink:0;animation:arrowPulse 2.4s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:0.5;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.15)}}
+.mt-amount{background:var(--primary);color:#fff;border-radius:10px;padding:8px 14px;font-size:16px;font-weight:900;white-space:nowrap;box-shadow:0 4px 12px rgba(30,27,75,0.25)}
+.sub-transfer{margin-left:16px;padding:10px 12px;background:rgba(99,102,241,0.05);border-radius:10px;margin-bottom:6px;border-left:3px solid var(--accent)}
+.sub-row{display:flex;align-items:center;gap:8px}
+.sub-label{font-size:10px;font-weight:700;color:var(--text-3);width:36px;flex-shrink:0}
+.settlement-done{background:linear-gradient(135deg,#10b981,#059669);border-radius:var(--radius-sm);padding:20px;text-align:center;color:#fff;box-shadow:0 8px 32px rgba(16,185,129,0.3);margin-top:4px}
+.sd-icon{font-size:36px;margin-bottom:6px}
+.sd-title{font-size:15px;font-weight:900;margin-bottom:4px}
+.sd-sub{font-size:12px;opacity:0.8}
+.wpw-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.wpw-header{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;padding:14px 18px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:10px}
+.wpw-row{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:10px}
+.wpw-row:last-child{border-bottom:none}
+.wpw-row.green-bg{background:#f0fdf4}
+.wpw-from{flex:1}
+.wpw-from .n{font-size:12px;font-weight:800;color:var(--red)}
+.wpw-from .d{font-size:10px;color:var(--text-3);margin-top:2px}
+.wpw-to{flex:1}
+.wpw-to .n{font-size:12px;font-weight:800;color:var(--green);text-align:right}
+.wpw-to .d{font-size:10px;color:var(--text-3);margin-top:2px;text-align:right}
+.wpw-arrow{font-size:20px;color:var(--text-3);flex-shrink:0}
+.wpw-amount{background:var(--primary);color:#fff;border-radius:10px;padding:6px 12px;font-size:15px;font-weight:900;white-space:nowrap;box-shadow:0 3px 10px rgba(30,27,75,0.2)}
+.wpw-amount.done{background:var(--green);box-shadow:0 3px 10px rgba(16,185,129,0.3)}
+.paid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.paid-card{border-radius:var(--radius-sm);padding:14px;text-align:center;border:2px solid var(--border);background:var(--surface)}
+.pc-avatar{font-size:26px;margin-bottom:8px}
+.pc-name{font-size:12px;font-weight:800;margin-bottom:6px}
+.pc-detail{font-size:10px;color:var(--text-3);margin-bottom:2px}
+.pc-val{font-size:16px;font-weight:900}
+.pc-val.pos{color:var(--green)}
+.pc-val.neg{color:var(--red)}
+.r-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);transition:background 0.15s}
+.r-item:last-child{border-bottom:none}
+.r-item:hover{background:rgba(99,102,241,0.03);margin:0 -4px;padding-left:4px;padding-right:4px;border-radius:8px}
+.r-num{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.r-icon{font-size:24px;flex-shrink:0}
+.r-info{flex:1;min-width:0}
+.r-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-payer{font-size:10px;color:var(--text-3);margin-top:2px}
+.r-amount{font-size:16px;font-weight:900;color:var(--text);flex-shrink:0}
+.r-total{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;border-radius:var(--radius-sm);padding:16px 18px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 24px rgba(30,27,75,0.2)}
+.r-total-l{font-size:12px;font-weight:700;opacity:0.75}
+.r-total-v{font-size:24px;font-weight:900}
+.pricing-toggle{text-align:center;margin:14px 0}
+.pt-btn{background:none;border:2px solid var(--border);color:var(--text-2);font-size:12px;font-weight:700;cursor:pointer;padding:9px 22px;border-radius:100px;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.pt-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pt-grid{display:none;grid-template-columns:1fr 1fr;gap:8px}
+.pt-grid.open{display:grid}
+.pt-item{background:#f8fafc;padding:11px 13px;border-radius:10px;border:1px solid var(--border)}
+.pt-item-a{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.pt-item-d{font-size:10px;color:var(--text-3);line-height:1.5}
+.footer{text-align:center;color:var(--text-3);font-size:11px;padding:24px 16px;line-height:1.9}
+@media(max-width:400px){.hero-title{font-size:23px}.ht-amount{font-size:44px}.family-grid{grid-template-columns:1fr}.sum-val{font-size:16px}.net-grid{grid-template-columns:1fr 1fr}.fs-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">🏔️ Pigeon Forge, TN · March 26–29, 2026</div>
+  <div class="hero-title">💸 Trip Expense Split</div>
+  <div class="hero-meta">18 people · 5 families · 3521 Peggy Lane</div>
+  <div class="hero-total">
+    <span class="ht-label">Grand Total</span>
+    <span class="ht-amount">$7,112</span>
+    <span class="ht-sub">Actual amount spent</span>
+  </div>
+  <div class="hero-pills">
+    <div class="hp">🎢 Activities &nbsp;—&nbsp; $3,759</div>
+    <div class="hp">🏠 Cabin &nbsp;—&nbsp; $3,353</div>
+    <div class="hp">👥 18 guests</div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview')"><span>📊</span> Overview</button>
+  <button class="tab-btn" onclick="showTab('settlement')"><span>💸</span> Settlement</button>
+  <button class="tab-btn" onclick="showTab('receipts')"><span>🧾</span> Receipts</button>
+</div>
+
+
+<div id="overview" class="panel active">
+<div class="summary-row">
+<div class="sum-card"><div class="sum-icon"></div><span class="sum-lbl">Activities</span><div class="sum-val">$3,759</div></div>
+<div class="sum-card"><div class="sum-icon"></div><span class="sum-lbl">Cabin</span><div class="sum-val">$3,353</div></div>
+<div class="sum-card"><div class="sum-icon"></div><span class="sum-lbl">People</span><div class="sum-val">18</div></div>
+</div>
+
+<div class="age-rule">
+<div class="ar-icon"></div>
+<div class="ar-text"><strong>How ages affect pricing:</strong> Under 5 = FREE everywhere | Age 5-12 = Child rate | 13+ = Adult rate. Tuhi (3yr) and Varni (1yr) are FREE at every activity.</div>
+</div>
+
+<div class="family-grid">
+<div class="family-card">
+<div class="family-header"><span class="family-icon"></span><div><div class="family-name">Ankit Patel</div><div class="family-members">Ankit + Suhani -- Nirmaan 8yr -- Tuhi 3yr</div></div></div>
+<div class="family-breakdown">
+<div class="fb-row"><span>Meals</span><span class="r">4 x $78.88</span></div>
+<div class="fb-row"><span>Titanic</span><span class="r">2A + 1K + Tuhi FREE</span></div>
+<div class="fb-row"><span>Skylift</span><span class="r">2A + 1K + Tuhi FREE</span></div>
+<div class="fb-row"><span>Water Park</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Aquarium</span><span class="r">2A + Nirmaan($20.99) + Tuhi(3yr $10.99)</span></div>
+<div class="fb-row"><span>Rides</span><span class="r">Nirmaan $28 + Tuhi FREE</span></div>
+</div>
+<div class="family-footer"><span>3 paying guests</span><span style="color:var(--green)">+$1,989</span></div>
+</div>
+<div class="family-card">
+<div class="family-header"><span class="family-icon"></span><div><div class="family-name">Amrish Bhai</div><div class="family-members">Amrish + Suyogi -- Divya 12yr -- Nirmani 7yr</div></div></div>
+<div class="family-breakdown">
+<div class="fb-row"><span>Meals</span><span class="r">4 x $78.88</span></div>
+<div class="fb-row"><span>Titanic</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Skylift</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Water Park</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Aquarium</span><span class="r">2A + Divya $20.99 + Nirmani FREE</span></div>
+<div class="fb-row"><span>Rides</span><span class="r">Divya $28 + Nirmani $28</span></div>
+</div>
+<div class="family-footer"><span>4 paying guests</span><span style="color:var(--red)">-$1,520</span></div>
+</div>
+<div class="family-card">
+<div class="family-header"><span class="family-icon"></span><div><div class="family-name">Ashish Patel</div><div class="family-members">Ashish + Hiral -- Suhradam 11yr -- Nirmaan A. 8yr</div></div></div>
+<div class="family-breakdown">
+<div class="fb-row"><span>Meals</span><span class="r">4 x $78.88</span></div>
+<div class="fb-row"><span>Titanic</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Skylift</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Water Park</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Aquarium</span><span class="r">2A + 2 children</span></div>
+<div class="fb-row"><span>Rides</span><span class="r">Both kids $28 each</span></div>
+</div>
+<div class="family-footer"><span>4 paying guests</span><span style="color:var(--green)">+$863</span></div>
+</div>
+<div class="family-card">
+<div class="family-header"><span class="family-icon"></span><div><div class="family-name">Mon2 Bhai</div><div class="family-members">Mon2 + Chaitali -- Darshi 8yr</div></div></div>
+<div class="family-breakdown">
+<div class="fb-row"><span>Meals</span><span class="r">3 x $78.88</span></div>
+<div class="fb-row"><span>Titanic</span><span class="r">2A + 1 child</span></div>
+<div class="fb-row"><span>Skylift</span><span class="r">2A + 1 child</span></div>
+<div class="fb-row"><span>Water Park</span><span class="r">2A + 1 child</span></div>
+<div class="fb-row"><span>Aquarium</span><span class="r">2A + 1 child</span></div>
+<div class="fb-row"><span>Rides</span><span class="r">Darshi $28</span></div>
+</div>
+<div class="family-footer"><span>3 paying guests</span><span style="color:var(--red)">-$360</span></div>
+</div>
+<div class="family-card">
+<div class="family-header"><span class="family-icon"></span><div><div class="family-name">Saunak Patel</div><div class="family-members">Saunak + Dharna -- Varni 1yr</div></div></div>
+<div class="family-breakdown">
+<div class="fb-row"><span>Meals</span><span class="r">2 x $78.88</span></div>
+<div class="fb-row"><span>Titanic</span><span class="r">2A + Varni FREE</span></div>
+<div class="fb-row"><span>Skylift</span><span class="r">2A + Varni FREE</span></div>
+<div class="fb-row"><span>Water Park</span><span class="r">1A($35) + Varni FREE</span></div>
+<div class="fb-row"><span>Aquarium</span><span class="r">2A + Varni FREE</span></div>
+<div class="fb-row"><span>Rides</span><span class="r">Varni FREE</span></div>
+</div>
+<div class="family-footer"><span>2 paying guests</span><span style="color:var(--red)">-$1,100</span></div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-title">NET BALANCES</div>
+<div class="net-grid">
+<div class="net-card positive"><div class="net-avatar"></div><div class="netname">Ankit Patel</div><div class="net-amount">+$1,989</div><span class="net-status">Gets Back</span></div>
+<div class="net-card positive"><div class="net-avatar"></div><div class="netname">Ashish Patel</div><div class="net-amount">+$863</div><span class="net-status">Gets Back</span></div>
+<div class="net-card negative"><div class="net-avatar"></div><div class="netname">Amrish Bhai</div><div class="net-amount">-$1,520</div><span class="net-status">Owes</span></div>
+<div class="net-card negative"><div class="net-avatar"></div><div class="netname">Mon2 Bhai</div><div class="net-amount">-$360</div><span class="net-status">Owes</span></div>
+<div class="full-span"><div class="net-card negative"><div class="net-avatar"></div><div class="net-info"><div class="netname">Saunak Patel</div><div class="net-amount">-$1,100</div></div><span class="net-status">Owes</span></div></div>
+</div>
+</div>
+
+<div class="math-card">
+<div class="card-title">HOW THE MATH WORKS</div>
+<div class="math-row"><div class="math-icon">1</div><div class="math-text"><strong>Count paying guests</strong> -- Toddlers (under 5) are FREE everywhere</div></div>
+<div class="math-row"><div class="math-icon">2</div><div class="math-text"><strong>Count what everyone paid</strong> toward activities + meals + cabin</div></div>
+<div class="math-row"><div class="math-icon">3</div><div class="math-text"><strong>Fair share =</strong> (activities x paying guests) + (cabin / 5 families)</div></div>
+<div class="math-row"><div class="math-icon">4</div><div class="math-text"><strong>Net = Paid - Fair Share</strong> -- Positive = gets money back, Negative = owes</div></div>
+</div>
+
+<div class="card">
+<div class="card-title">PER-FAMILY FAIR SHARE BREAKDOWN</div>
+<div class="fs-grid">
+<div class="fs-card"><div class="fs-header"><div class="fs-name">Ankit -- 3 guests</div><span class="fs-tag green">+$1,989</span></div><div class="fs-lines">Meals: 4 x $78.88 = $315.53<br>Titanic: 2A + 1K = $88.97<br>Skylift: 2A + 1K = $105.85<br>Water: 2A + 2K = $120<br>Aquarium: $103.96<br>Rides: $56.67 + Ice cream: $18</div><div class="fs-total"><span>Activities: $809 -- Cabin: $670</span><span>Total: $1,479</span></div></div>
+<div class="fs-card"><div class="fs-header"><div class="fs-name">Amrish -- 4 guests</div><span class="fs-tag red">-$1,520</span></div><div class="fs-lines">Meals: 4 x $78.88 = $315.53<br>Titanic: 2A + 2K = $88.97<br>Skylift: 2A + 2K = $105.85<br>Water: 2A + 2K = $120<br>Aquarium: $83.97<br>Rides: $56.67 + Ice cream: $18</div><div class="fs-total"><span>Activities: $809 -- Cabin: $670</span><span>Total: $1,479</span></div></div>
+<div class="fs-card"><div class="fs-header"><div class="fs-name">Saunak -- 2 guests</div><span class="fs-tag red">-$1,100</span></div><div class="fs-lines">Meals: 2 x $78.88 = $157.76<br>Titanic: 2A + Varni FREE = $75.98<br>Skylift: 2A + Varni FREE = $79.90<br>Water: 2A + Varni FREE = $70<br>Aquarium: $71.98 + Varni FREE<br>Rides: Varni FREE</div><div class="fs-total"><span>Activities: ~$319 -- Cabin: $670</span><span>Total: ~$989</span></div></div>
+</div>
+<div style="font-size:10px;color:var(--text-3);text-align:center;margin-top:12px">Each fair share = (activities x paying guests) + (cabin / 5). Ages determine paying guest count.</div>
+</div>
+
+<div class="info-note amber">
+<div class="info-note-title">Why Amrish Owes $1,520</div>
+<div class="info-note-body">Amrish paid <strong>$0</strong> toward the trip. His fair share = activities + cabin = ~$1,520. He owes the group <strong>$1,520</strong> -- others covered his share.</div>
+</div>
+<div class="info-note amber">
+<div class="info-note-title">Why Saunak Owes $1,100</div>
+<div class="info-note-body">Saunak paid <strong>$152</strong> total. His fair share = ~$1,252. He still owes <strong>$1,100</strong> to the group.</div>
+</div>
+<div class="info-note amber">
+<div class="info-note-title">Why Mon2 Only Owes $360</div>
+<div class="info-note-body">Mon2 paid <strong>$1,048</strong> (the most after Ankit and Ashish). His fair share = ~$1,408. He only owes <strong>$360</strong> -- he paid close to his share already!</div>
+</div>
+</div>
+
+
+<!-- ═══ SETTLEMENT ═══ -->
+<div id="settlement" class="panel">
+  <div class="card">
+    <div class="card-title">💵 Who Paid What</div>
+    <div class="paid-grid">
+      <div class="paid-card"><div class="pc-avatar">👨‍💼</div><div class="pc-name">Ankit Patel</div><div class="pc-detail">Paid: $3,503</div><div class="pc-detail">Fair share: $1,514</div><div class="pc-val pos">+$1,989</div></div>
+      <div class="paid-card"><div class="pc-avatar">👨‍💻</div><div class="pc-name">Ashish Patel</div><div class="pc-detail">Paid: $2,409</div><div class="pc-detail">Fair share: $1,546</div><div class="pc-val pos">+$863</div></div>
+      <div class="paid-card"><div class="pc-avatar">😬</div><div class="pc-name">Amrish Bhai</div><div class="pc-detail">Paid: $0</div><div class="pc-detail">Fair share: $1,520</div><div class="pc-val neg">−$1,520</div></div>
+      <div class="paid-card"><div class="pc-avatar">😐</div><div class="pc-name">Mon2 Bhai</div><div class="pc-detail">Paid: $1,048</div><div class="pc-detail">Fair share: $1,408</div><div class="pc-val neg">−$360</div></div>
+      <div class="paid-card"><div class="pc-avatar">😬</div><div class="pc-name">Saunak Patel</div><div class="pc-detail">Paid: $152</div><div class="pc-detail">Fair share: $1,252</div><div class="pc-val neg">−$1,100</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Net Positions</div>
+    <div class="net-grid">
+      <div class="net-card positive"><div class="net-avatar">👨‍💼</div><div class="net-name">Ankit Patel</div><div class="net-amount">+$1,989</div><span class="net-status">Gets Back</span></div>
+      <div class="net-card positive"><div class="net-avatar">👨‍💻</div><div class="net-name">Ashish Patel</div><div class="net-amount">+$863</div><span class="net-status">Gets Back</span></div>
+      <div class="net-card negative"><div class="net-avatar">😬</div><div class="net-name">Amrish Bhai</div><div class="net-amount">−$1,520</div><span class="net-status">Owes</span></div>
+      <div class="net-card negative"><div class="net-avatar">😐</div><div class="net-name">Mon2 Bhai</div><div class="net-amount">−$360</div><span class="net-status">Owes</span></div>
+      <div class="full-span">
+        <div class="net-card negative">
+          <div class="net-avatar">😐</div>
+          <div class="net-info"><div class="net-name">Saunak Patel</div><div class="net-amount">−$1,100</div></div>
+          <span class="net-status">Owes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💸 Settlement Steps — 4 Payments</div>
+    <div class="step-card">
+      <div class="step-header"><div class="step-num">1</div><div class="step-title">Mon2 → Ankit</div></div>
+      <div class="step-sub">Mon2 paid close to his share — only owes $360. Goes directly to Ankit.</div>
+      <div class="money-transfer">
+        <div class="mt-person"><div class="mt-name frm">Mon2</div><div class="mt-sub">Owes $360</div></div>
+        <div class="mt-arrow">→</div>
+        <div class="mt-person"><div class="mt-name to">Ankit</div><div class="mt-sub">Receives</div></div>
+        <div class="mt-amount">$360</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-header"><div class="step-num">2</div><div class="step-title">Saunak → Ankit</div></div>
+      <div class="step-sub">Saunak paid almost nothing ($152). His full debt of $1,100 goes straight to Ankit.</div>
+      <div class="money-transfer">
+        <div class="mt-person"><div class="mt-name frm">Saunak</div><div class="mt-sub">Owes $1,100</div></div>
+        <div class="mt-arrow">→</div>
+        <div class="mt-person"><div class="mt-name to">Ankit</div><div class="mt-sub">Receives</div></div>
+        <div class="mt-amount">$1,100</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-header"><div class="step-num">3</div><div class="step-title">Amrish → Ankit + Ashish</div></div>
+      <div class="step-sub">Amrish paid $0. His $1,520 debt is split: $529 to Ankit (completes him) + $991 to Ashish (almost his full share).</div>
+      <div class="money-transfer">
+        <div class="mt-person"><div class="mt-name frm">Amrish</div><div class="mt-sub">Pays $529</div></div>
+        <div class="mt-arrow">→</div>
+        <div class="mt-person"><div class="mt-name to">Ankit</div><div class="mt-sub">Now settled!</div></div>
+        <div class="mt-amount">$529</div>
+      </div>
+      <div class="money-transfer">
+        <div class="mt-person"><div class="mt-name frm">Amrish</div><div class="mt-sub">Pays $991</div></div>
+        <div class="mt-arrow">→</div>
+        <div class="mt-person"><div class="mt-name to">Ashish</div><div class="mt-sub">Settled!</div></div>
+        <div class="mt-amount">$991</div>
+      </div>
+    </div>
+    <div class="settlement-done">
+      <div class="sd-icon">✅</div>
+      <div class="sd-title">EVERYONE IS NOW SETTLED</div>
+      <div class="sd-sub">$0.00 remaining · All debts cleared</div>
+    </div>
+  </div>
+  <div class="wpw-card">
+    <div class="wpw-header">💸 Final Answer — Who Pays Whom</div>
+    <div class="wpw-row">
+      <div class="wpw-from"><div class="n">Mon2 Bhai</div><div class="d">Paid $1,048 · Owes $360</div></div>
+      <div class="wpw-arrow">→</div>
+      <div class="wpw-to"><div class="n">Ankit Patel</div><div class="d">Close to his share</div></div>
+      <div class="wpw-amount">$360</div>
+    </div>
+    <div class="wpw-row">
+      <div class="wpw-from"><div class="n">Saunak Patel</div><div class="d">Paid $152 · Owes $1,100</div></div>
+      <div class="wpw-arrow">→</div>
+      <div class="wpw-to"><div class="n">Ankit Patel</div><div class="d">Full debt to Ankit</div></div>
+      <div class="wpw-amount">$1,100</div>
+    </div>
+    <div class="wpw-row">
+      <div class="wpw-from"><div class="n">Amrish Bhai</div><div class="d">Paid $0 · Owes $1,520</div></div>
+      <div class="wpw-arrow">→</div>
+      <div class="wpw-to"><div class="n">Ankit ($529) + Ashish ($991)</div><div class="d">Split Amrish payment</div></div>
+      <div class="wpw-amount">$1,520</div>
+    </div>
+    <div class="wpw-row green-bg">
+      <div class="wpw-from"><div class="n" style="color:var(--green)">✅ Ankit</div><div class="d">Receives $360 + $1,100 + $529 = $1,989</div></div>
+      <div class="wpw-arrow">=</div>
+      <div class="wpw-to"><div class="n" style="color:var(--green)">Settled!</div><div class="d">Net = $0</div></div>
+      <div class="wpw-amount done">$0</div>
+    </div>
+    <div class="wpw-row green-bg">
+      <div class="wpw-from"><div class="n" style="color:var(--green)">✅ Ashish</div><div class="d">Receives $991 (vs needed $863)</div></div>
+      <div class="wpw-arrow">=</div>
+      <div class="wpw-to"><div class="n" style="color:var(--green)">Settled!</div><div class="d">Net = $0</div></div>
+      <div class="wpw-amount done">$0</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RECEIPTS ═══ -->
+<div id="receipts" class="panel">
+  <div class="card">
+    <div class="card-title">👨‍👩‍👧‍👦 All 5 Families — Quick Look</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px">
+      <div style="background:#f0fdf4;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#1e293b">Ankit Patel</div>
+        <div style="font-size:10px;color:#64748b">Ankit+Suhani+Nirmaan(8)+Tuhi(3)</div>
+        <div style="font-size:13px;font-weight:800;color:#16a34a;margin-top:3px">+$1,989</div>
+      </div>
+      <div style="background:#fef2f2;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#1e293b">Amrish Bhai</div>
+        <div style="font-size:10px;color:#64748b">Amrish+Suyogi+Divya(12)+Nirmani(7)</div>
+        <div style="font-size:13px;font-weight:800;color:#dc2626;margin-top:3px">-$1,520</div>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#1e293b">Ashish Patel</div>
+        <div style="font-size:10px;color:#64748b">Ashish+Hiral+Suhradam(11)+Nirmaan A.(8)</div>
+        <div style="font-size:13px;font-weight:800;color:#16a34a;margin-top:3px">+$863</div>
+      </div>
+      <div style="background:#fffbeb;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#1e293b">Mon2 Bhai</div>
+        <div style="font-size:10px;color:#64748b">Mon2+Chaitali+Darshi(8)</div>
+        <div style="font-size:13px;font-weight:800;color:#dc2626;margin-top:3px">-$360</div>
+      </div>
+      <div style="grid-column:span 2;background:#eff6ff;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#1e293b">Saunak Patel</div>
+        <div style="font-size:10px;color:#64748b">Saunak+Dharna+Varni(1)</div>
+        <div style="font-size:13px;font-weight:800;color:#dc2626;margin-top:3px">-$1,100</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧾 All 12 Expenses</div>
+    <div class="r-item"><div class="r-num">1</div><div class="r-icon">🎢</div><div class="r-info"><div class="r-name">The Island — Kids Rides</div></div><div class="r-amount">$170.00</div></div>
+    <div class="r-item"><div class="r-num">2</div><div class="r-icon">🍕</div><div class="r-info"><div class="r-name">Mellow Mushroom (Lunch)</div><div class="r-payer">Ankit paid</div></div><div class="r-amount">$150.00</div></div>
+    <div class="r-item"><div class="r-num">3</div><div class="r-icon">🍕</div><div class="r-info"><div class="r-name">Mellow Mushroom (Extra)</div><div class="r-payer">Saunak paid</div></div><div class="r-amount">$62.00</div></div>
+    <div class="r-item"><div class="r-num">4</div><div class="r-icon">🍜</div><div class="r-info"><div class="r-name">North Chinese Restaurant</div><div class="r-payer">Ashish paid</div></div><div class="r-amount">$240.00</div></div>
+    <div class="r-item"><div class="r-num">5</div><div class="r-icon">🚠</div><div class="r-info"><div class="r-name">Gatlinburg Skylift Park</div><div class="r-payer">Mon2 paid</div></div><div class="r-amount">$636.00</div></div>
+    <div class="r-item"><div class="r-num">6</div><div class="r-icon">💧</div><div class="r-info"><div class="r-name">Wild Bear Falls Water Park</div><div class="r-payer">Mon2 paid</div></div><div class="r-amount">$412.00</div></div>
+    <div class="r-item"><div class="r-num">7</div><div class="r-icon">🍦</div><div class="r-info"><div class="r-name">Ben & Jerry's Ice Cream</div><div class="r-payer">Saunak paid</div></div><div class="r-amount">$90.00</div></div>
+    <div class="r-item"><div class="r-num">8</div><div class="r-icon">🍛</div><div class="r-info"><div class="r-name">Indian Restaurant (Dinner)</div><div class="r-payer">Ashish paid</div></div><div class="r-amount">$555.00</div></div>
+    <div class="r-item"><div class="r-num">9</div><div class="r-icon">🚢</div><div class="r-info"><div class="r-name">Titanic Museum</div><div class="r-payer">Ashish paid</div></div><div class="r-amount">$513.88</div></div>
+    <div class="r-item"><div class="r-num">10</div><div class="r-icon">🐠</div><div class="r-info"><div class="r-name">Ripley's Aquarium</div><div class="r-payer">Ashish paid</div></div><div class="r-amount">$596.56</div></div>
+    <div class="r-item"><div class="r-num">11</div><div class="r-icon">🍝</div><div class="r-info"><div class="r-name">Olive Garden (Dinner)</div><div class="r-payer">Ashish paid</div></div><div class="r-amount">$334.00</div></div>
+    <div class="r-item"><div class="r-num">12</div><div class="r-icon">🏠</div><div class="r-info"><div class="r-name">Cabin Rental</div><div class="r-payer">Ankit paid</div></div><div class="r-amount">$3,352.87</div></div>
+    <div id="receipts" class="panel"><div class="r-total"><div class="r-total-l">GRAND TOTAL</div><div class="r-total-v">$7,112.31</div></div>
+  </div>
+  <div class="pricing-toggle">
+    <button class="pt-btn" onclick="document.getElementById('ptgrid').classList.toggle('open')">📋 Ticket Prices ▼</button>
+  </div>
+  <div id="ptgrid" class="pt-grid">
+    <div class="pt-item"><div class="pt-item-a">🚢 Titanic Museum</div><div class="pt-item-d">Adult $37.99 · Child 5-12 $12.99 · Under 5 FREE</div></div>
+    <div class="pt-item"><div class="pt-item-a">🚠 Skylift Park</div><div class="pt-item-d">Adult $39.95 · Junior 6-11 $25.95 · Under 5 FREE</div></div>
+    <div class="pt-item"><div class="pt-item-a">💧 Water Park</div><div class="pt-item-d">Adult $35 · Child $25 · Under 4 FREE</div></div>
+    <div class="pt-item"><div class="pt-item-a">🐠 Ripley's Aquarium</div><div class="pt-item-d">Adult $35.99 · Child 6-11 $20.99 · Child 2-5 $10.99 · Under 2 FREE</div></div>
+    <div class="pt-item"><div class="pt-item-a">🎢 Island Rides</div><div class="pt-item-d">Child $28.33 · Under 5 FREE · 6 kids total</div></div>
+    <div class="pt-item"><div class="pt-item-a">🍽️ Meals</div><div class="pt-item-d">$78.88/person · 17 people = $1,341 · Birthday dinner: Ashish treated 🎂</div>
+  </div>
+</div>
+
+</div>
+<div class="footer"><strong>Pigeon Forge, TN — March 26–29, 2026</strong><br>18 people · 5 families · Fair share split with actual ticket prices & taxes</div>
+
+</div>
+
+<script>
+function showTab(id) {
+  var tabs = document.querySelectorAll(".tab-btn");
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+  var panels = document.querySelectorAll(".panel");
+  for (var j = 0; j < panels.length; j++) panels[j].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  for (var k = 0; k < tabs.length; k++) {
+    var txt = tabs[k].textContent || tabs[k].innerText;
+    if ((txt.indexOf("Overview") > -1 && id === "overview") ||
+        (txt.indexOf("Settlement") > -1 && id === "settlement") ||
+        (txt.indexOf("Receipts") > -1 && id === "receipts")) {
+      tabs[k].classList.add("active");
+    }
+  }
+}
+</script>
+</div>
+</body>
+</html>
