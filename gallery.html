@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigeon Forge 2026 🏔️</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: white; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%); }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(90deg, #f39c12, #e74c3c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: #888; font-size: 1.1rem; }
+        .photo-count { margin-top: 15px; display: inline-block; background: rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .photo-card { background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .photo-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .photo-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+        .photo-card video { width: 100%; height: 200px; object-fit: cover; display: block; }
+        .photo-info { padding: 12px; }
+        .photo-label { color: #888; font-size: 0.85rem; }
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+        .lightbox.active { display: flex; }
+        .lightbox img, .lightbox video { max-width: 90%; max-height: 80vh; }
+        .lightbox-info { color: #888; margin-top: 15px; font-size: 0.9rem; }
+        .close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; padding: 15px 20px; cursor: pointer; font-size: 20px; border-radius: 8px; }
+        .nav-btn:hover { background: rgba(255,255,255,0.2); }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+        .filter { text-align: center; padding: 20px; }
+        .filter button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 20px; margin: 0 5px; border-radius: 20px; cursor: pointer; }
+        .filter button.active { background: rgba(255,255,255,0.2); }
+        footer { text-align: center; padding: 30px; color: #555; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏔️ Pigeon Forge 2026</h1>
+        <p class="subtitle">Making memories with family & friends</p>
+        <span class="photo-count">📸 <span id="count">102</span> photos • 🎬 <span id="video-count">6</span> videos</span>
+    </header>
+    <div class="filter">
+        <button class="active" onclick="filterAll()">All</button>
+        <button onclick="filterPhotos()">Photos Only</button>
+        <button onclick="filterVideos()">Videos Only</button>
+    </div>
+    <div class="gallery" id="gallery"></div>
+    <div class="lightbox" id="lightbox">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <button class="nav-btn prev" onclick="prevImage(event)">&#10094;</button>
+        <div id="lightbox-content"></div>
+        <button class="nav-btn next" onclick="nextImage(event)">&#10095;</button>
+        <div class="lightbox-info" id="lightbox-info"></div>
+    </div>
+    <footer>Made with 🦞</footer>
+    <script>
+        const photos = [
+            {type: 'photo', src: 'photos/01.jpg', label: 'Photo 1'},
+            {type: 'photo', src: 'photos/02.jpg', label: 'Photo 2'},
+            {type: 'photo', src: 'photos/03.jpg', label: 'Photo 3'},
+            {type: 'photo', src: 'photos/04.jpg', label: 'Photo 4'},
+            {type: 'photo', src: 'photos/05.jpg', label: 'Photo 5'},
+            {type: 'photo', src: 'photos/06.jpg', label: 'Photo 6'},
+            {type: 'photo', src: 'photos/07.jpg', label: 'Photo 7'},
+            {type: 'photo', src: 'photos/08.jpg', label: 'Photo 8'},
+            {type: 'photo', src: 'photos/09.jpg', label: 'Photo 9'},
+            {type: 'photo', src: 'photos/10.jpg', label: 'Photo 10'},
+            {type: 'photo', src: 'photos/11.jpg', label: 'Photo 11'},
+            {type: 'photo', src: 'photos/12.jpg', label: 'Photo 12'},
+            {type: 'photo', src: 'photos/13.jpg', label: 'Photo 13'},
+            {type: 'photo', src: 'photos/14.jpg', label: 'Photo 14'},
+            {type: 'photo', src: 'photos/15.jpg', label: 'Photo 15'},
+            {type: 'photo', src: 'photos/16.jpg', label: 'Photo 16'},
+            {type: 'photo', src: 'photos/17.jpg', label: 'Photo 17'},
+            {type: 'photo', src: 'photos/18.jpg', label: 'Photo 18'},
+            {type: 'photo', src: 'photos/19.jpg', label: 'Photo 19'},
+            {type: 'photo', src: 'photos/20.jpg', label: 'Photo 20'},
+            {type: 'photo', src: 'photos/21.jpg', label: 'Photo 21'},
+            {type: 'photo', src: 'photos/22.jpg', label: 'Photo 22'},
+            {type: 'photo', src: 'photos/23.jpg', label: 'Photo 23'},
+            {type: 'photo', src: 'photos/24.jpg', label: 'Photo 24'},
+            {type: 'photo', src: 'photos/25.jpg', label: 'Photo 25'},
+            {type: 'photo', src: 'photos/26.jpg', label: 'Photo 26'},
+            {type: 'photo', src: 'photos/27.jpg', label: 'Photo 27'},
+            {type: 'photo', src: 'photos/28.jpg', label: 'Photo 28'},
+            {type: 'photo', src: 'photos/29.jpg', label: 'Photo 29'},
+            {type: 'photo', src: 'photos/30.jpg', label: 'Photo 30'},
+            {type: 'photo', src: 'photos/31.jpg', label: 'Photo 31'},
+            {type: 'photo', src: 'photos/32.jpg', label: 'Photo 32'},
+            {type: 'photo', src: 'photos/33.jpg', label: 'Photo 33'},
+            {type: 'photo', src: 'photos/34.jpg', label: 'Photo 34'},
+            {type: 'photo', src: 'photos/35.jpg', label: 'Photo 35'},
+            {type: 'photo', src: 'photos/36.jpg', label: 'Photo 36'},
+            {type: 'photo', src: 'photos/37.jpg', label: 'Photo 37'},
+            {type: 'photo', src: 'photos/38.jpg', label: 'Photo 38'},
+            {type: 'photo', src: 'photos/39.jpg', label: 'Photo 39'},
+            {type: 'photo', src: 'photos/40.jpg', label: 'Photo 40'},
+            {type: 'photo', src: 'photos/41.jpg', label: 'Photo 41'},
+            {type: 'photo', src: 'photos/42.jpg', label: 'Photo 42'},
+            {type: 'photo', src: 'photos/43.jpg', label: 'Photo 43'},
+            {type: 'photo', src: 'photos/44.jpg', label: 'Photo 44'},
+            {type: 'photo', src: 'photos/45.jpg', label: 'Photo 45'},
+            {type: 'photo', src: 'photos/46.jpg', label: 'Photo 46'},
+            {type: 'photo', src: 'photos/47.jpg', label: 'Photo 47'},
+            {type: 'photo', src: 'photos/48.jpg', label: 'Photo 48'},
+            {type: 'photo', src: 'photos/49.jpg', label: 'Photo 49'},
+            {type: 'photo', src: 'photos/50.jpg', label: 'Photo 50'},
+            {type: 'photo', src: 'photos/51.jpg', label: 'Photo 51'},
+            {type: 'photo', src: 'photos/52.jpg', label: 'Photo 52'},
+            {type: 'photo', src: 'photos/53.jpg', label: 'Photo 53'},
+            {type: 'photo', src: 'photos/54.jpg', label: 'Photo 54'},
+            {type: 'photo', src: 'photos/55.jpg', label: 'Photo 55'},
+            {type: 'photo', src: 'photos/56.jpg', label: 'Photo 56'},
+            {type: 'photo', src: 'photos/57.jpg', label: 'Photo 57'},
+            {type: 'photo', src: 'photos/58.jpg', label: 'Photo 58'},
+            {type: 'photo', src: 'photos/59.jpg', label: 'Photo 59'},
+            {type: 'photo', src: 'photos/60.jpg', label: 'Photo 60'},
+            {type: 'photo', src: 'photos/61.jpg', label: 'Photo 61'},
+            {type: 'photo', src: 'photos/62.jpg', label: 'Photo 62'},
+            {type: 'photo', src: 'photos/63.jpg', label: 'Photo 63'},
+            {type: 'photo', src: 'photos/64.jpg', label: 'Photo 64'},
+            {type: 'photo', src: 'photos/65.jpg', label: 'Photo 65'},
+            {type: 'photo', src: 'photos/66.jpg', label: 'Photo 66'},
+            {type: 'photo', src: 'photos/67.jpg', label: 'Photo 67'},
+            {type: 'photo', src: 'photos/68.jpg', label: 'Photo 68'},
+            {type: 'photo', src: 'photos/69.jpg', label: 'Photo 69'},
+            {type: 'photo', src: 'photos/70.jpg', label: 'Photo 70'},
+            {type: 'photo', src: 'photos/71.jpg', label: 'Photo 71'},
+            {type: 'photo', src: 'photos/72.jpg', label: 'Photo 72'},
+            {type: 'photo', src: 'photos/73.jpg', label: 'Photo 73'},
+            {type: 'photo', src: 'photos/74.jpg', label: 'Photo 74'},
+            {type: 'photo', src: 'photos/75.jpg', label: 'Photo 75'},
+            {type: 'photo', src: 'photos/76.jpg', label: 'Photo 76'},
+            {type: 'photo', src: 'photos/77.jpg', label: 'Photo 77'},
+            {type: 'photo', src: 'photos/78.jpg', label: 'Photo 78'},
+            {type: 'photo', src: 'photos/79.jpg', label: 'Photo 79'},
+            {type: 'photo', src: 'photos/80.jpg', label: 'Photo 80'},
+            {type: 'photo', src: 'photos/81.jpg', label: 'Photo 81'},
+            {type: 'photo', src: 'photos/82.jpg', label: 'Photo 82'},
+            {type: 'photo', src: 'photos/83.jpg', label: 'Photo 83'},
+            {type: 'photo', src: 'photos/84.jpg', label: 'Photo 84'},
+            {type: 'photo', src: 'photos/85.jpg', label: 'Photo 85'},
+            {type: 'photo', src: 'photos/86.jpg', label: 'Photo 86'},
+            {type: 'photo', src: 'photos/87.jpg', label: 'Photo 87'},
+            {type: 'photo', src: 'photos/88.jpg', label: 'Photo 88'},
+            {type: 'photo', src: 'photos/89.jpg', label: 'Photo 89'},
+            {type: 'photo', src: 'photos/90.jpg', label: 'Photo 90'},
+            {type: 'photo', src: 'photos/91.jpg', label: 'Photo 91'},
+            {type: 'photo', src: 'photos/92.jpg', label: 'Photo 92'},
+            {type: 'photo', src: 'photos/93.jpg', label: 'Photo 93'},
+            {type: 'photo', src: 'photos/94.jpg', label: 'Photo 94'},
+            {type: 'photo', src: 'photos/95.jpg', label: 'Photo 95'},
+            {type: 'photo', src: 'photos/96.jpg', label: 'Photo 96'},
+            {type: 'photo', src: 'photos/97.jpg', label: 'Photo 97'},
+            {type: 'photo', src: 'photos/98.jpg', label: 'Photo 98'},
+            {type: 'photo', src: 'photos/99.jpg', label: 'Photo 99'},
+            {type: 'photo', src: 'photos/100.jpg', label: 'Photo 100'},
+            {type: 'photo', src: 'photos/101.jpg', label: 'Photo 101'},
+            {type: 'photo', src: 'photos/102.jpg', label: 'Photo 102'}
+        ];
+        const videos = [
+            {type: 'video', src: 'photos/video1.mp4', label: 'Video 1'},
+            {type: 'video', src: 'photos/video2.mp4', label: 'Video 2'},
+            {type: 'video', src: 'photos/video3.mp4', label: 'Video 3'},
+            {type: 'video', src: 'photos/video4.mp4', label: 'Video 4'},
+            {type: 'video', src: 'photos/video5.mp4', label: 'Video 5'},
+            {type: 'video', src: 'photos/video6.mp4', label: 'Video 6'}
+        ];
+        let currentIndex = 0;
+        let currentList = [...photos, ...videos].sort((a, b) => 
+            parseInt(a.src.split('/')[1]) - parseInt(b.src.split('/')[1])
+        );
+
+        function render() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = currentList.map((item, i) => `
+                <div class="photo-card" onclick="openLightbox(i)">
+                    ${item.type === 'photo' 
+                        ? `<img src="${item.src}" alt="${item.label}">`
+                        : `<video src="${item.src}"></video>`}
+                    <div class="photo-info">
+                        <div class="photo-label">${item.label}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const item = currentList[index];
+            document.getElementById('lightbox-content').innerHTML = item.type === 'photo'
+                ? `<img src="${item.src}">`
+                : `<video src="${item.src}" controls autoplay></video>`;
+            document.getElementById('lightbox-info').textContent = item.label;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+        function prevImage(e) { e.stopPropagation(); currentIndex = (currentIndex - 1 + currentList.length) % currentList.length; openLightbox(currentIndex); }
+        function nextImage(e) { e.stopPropagation(); currentIndex = (currentIndex + 1) % currentList.length; openLightbox(currentIndex); }
+        function filterAll() { currentList = [...photos, ...videos].sort((a, b) => parseInt(a.src.split('/')[1]) - parseInt(b.src.split('/')[1])); render(); document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active')); document.querySelector('.filter button').classList.add('active'); }
+        function filterPhotos() { currentList = [...photos].sort((a, b) => parseInt(a.src.split('/')[1]) - parseInt(b.src.split('/')[1])); render(); document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active')); document.querySelectorAll('.filter button')[1].classList.add('active'); }
+        function filterVideos() { currentList = [...videos].sort((a, b) => parseInt(a.src.split('/')[1]) - parseInt(b.src.split('/')[1])); render(); document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active')); document.querySelectorAll('.filter button')[2].classList.add('active'); }
+        document.addEventListener('keydown', (e) => { if (!document.getElementById('lightbox').classList.contains('active')) return; if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') prevImage(e); if (e.key === 'ArrowRight') nextImage(e); });
+        render();
+    </script>
+</body>
+</html>
