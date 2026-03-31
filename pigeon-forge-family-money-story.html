@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" viewport-fit="cover">
+  <title>Pigeon Forge 2026 — Family Money Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="light"]{--bg:#f7fbff;--surface:#fff;--surface-2:#edf7ff;--surface-3:#fff5dd;--text:#1e2d3d;--muted:#66788f;--border:#d6e7f6;--blue:#38a8ff;--purple:#7f62ff;--green:#19c37d;--red:#ff6b6b;--yellow:#ffc83d;--orange:#ff9f45;--pink:#ff72b6;--shadow:0 14px 38px rgba(53,89,138,.15);--radius:26px;--pill:999px;--font-display:'Baloo 2',system-ui,sans-serif;--font-body:'Nunito',system-ui,sans-serif;--text-sm:clamp(.92rem,.9rem+.15vw,1rem);--text-base:clamp(1rem,.97rem+.2vw,1.125rem);--text-lg:clamp(1.2rem,1.05rem+.75vw,1.6rem);--text-xl:clamp(1.7rem,1.2rem+1.7vw,2.7rem);--text-2xl:clamp(2.4rem,1.7rem+3vw,4.5rem)}
+    [data-theme="dark"]{--bg:#0f1827;--surface:#182537;--surface-2:#213048;--surface-3:#312a42;--text:#edf6ff;--muted:#aec3d8;--border:#2e4460;--shadow:0 14px 38px rgba(0,0,0,.38)}
+    *{box-sizing:border-box;margin:0;padding:0} body{font-family:var(--font-body);background:radial-gradient(circle at top left,#dff3ff 0,transparent 32%),radial-gradient(circle at top right,#fff0bf 0,transparent 26%),var(--bg);color:var(--text);font-size:var(--text-base);line-height:1.5} img,svg{display:block;max-width:100%} button{font:inherit;border:0;background:none;cursor:pointer}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px} .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:10px 14px;border-radius:12px;z-index:10}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:var(--text-lg)}.mark{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--purple),var(--blue));box-shadow:var(--shadow)}.toggle{min-width:48px;min-height:48px;border-radius:16px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
+    h1,h2,h3{font-family:var(--font-display);line-height:1.05}.hero{background:linear-gradient(135deg,#735fff,#2bb0ff 58%,#3ddb8f);border-radius:34px;padding:28px;box-shadow:var(--shadow);color:#fff;position:relative;overflow:hidden}.hero:before,.hero:after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.12)}.hero:before{width:220px;height:220px;top:-70px;right:-60px}.hero:after{width:160px;height:160px;left:-50px;bottom:-55px}.eyebrow{display:inline-flex;gap:10px;align-items:center;padding:10px 16px;border-radius:var(--pill);background:rgba(255,255,255,.18);font-weight:800;margin-bottom:16px}.hero-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:18px;align-items:center}.hero h1{font-size:var(--text-2xl);margin-bottom:12px;max-width:10ch}.hero p{max-width:58ch;margin-bottom:16px;color:rgba(255,255,255,.95)}.hero-badges{display:flex;flex-wrap:wrap;gap:10px}.hero-badge{padding:10px 14px;border-radius:18px;background:rgba(255,255,255,.16);font-weight:900}.hero-side{padding:22px;border-radius:28px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18)}.big-number{font-family:var(--font-display);font-size:clamp(3rem,2rem+4vw,5.5rem);line-height:.95;margin:8px 0}.mini-legend{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.mini-legend .box{padding:12px;border-radius:18px;background:rgba(255,255,255,.15)}
+    .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:rgba(247,251,255,.78);backdrop-filter:blur(12px);padding:10px;border-radius:24px;margin:18px 0;position:sticky;top:10px;z-index:20}.tab{min-height:54px;border-radius:18px;color:var(--muted);font-weight:900}.tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)} .panel{display:none}.panel.active{display:block}
+    .section{display:grid;gap:16px;margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:var(--surface);border:1px solid var(--border);border-radius:28px;padding:20px;box-shadow:var(--shadow)}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.sub{color:var(--muted)}
+    .kpi{display:grid;place-items:center;text-align:center;min-height:180px;background:linear-gradient(180deg,var(--surface-2),var(--surface))}.kpi .emoji{font-size:2.7rem;margin-bottom:10px}.kpi strong{font-family:var(--font-display);font-size:2.25rem;display:block}.headline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.headline h2{font-size:var(--text-xl)}
+    .storyline{display:grid;gap:12px}.line{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px;border-radius:22px;background:linear-gradient(180deg,var(--surface-2),var(--surface));border:1px solid var(--border)}.icon{width:52px;height:52px;border-radius:18px;background:var(--surface-3);display:grid;place-items:center;font-size:1.5rem}.pill{padding:8px 12px;border-radius:var(--pill);background:var(--surface-3);font-weight:900}
+    .compare{display:grid;gap:12px}.compare-row{display:grid;gap:8px}.compare-top{display:flex;justify-content:space-between;font-weight:900}.track{height:18px;border-radius:var(--pill);background:var(--surface-2);overflow:hidden}.fill{height:100%;border-radius:var(--pill)}
+    .kid-area{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.kid-card{text-align:center;padding:16px;border-radius:22px;background:linear-gradient(180deg,var(--surface-3),var(--surface));border:1px solid var(--border)}.kid-card .big{font-size:2rem;margin-bottom:8px}
+    .family-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.family{padding:18px;border-radius:24px;background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border)}.family-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.avatar{width:58px;height:58px;border-radius:18px;background:var(--surface-3);display:grid;place-items:center;font-size:1.8rem}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.chip{padding:8px 12px;border-radius:var(--pill);background:var(--surface-3);font-size:var(--text-sm);font-weight:900}.money{font-family:var(--font-display);font-size:2rem}.pos{color:var(--green)}.neg{color:var(--red)}.settled{color:var(--green)}
+    .journey{display:grid;gap:12px}.step{display:grid;grid-template-columns:1fr auto 1fr auto;gap:12px;align-items:center;padding:16px;border-radius:22px;background:linear-gradient(180deg,var(--surface-2),var(--surface));border:1px solid var(--border)}.person{font-weight:900}.help{font-size:var(--text-sm);color:var(--muted)}.arrow{font-size:1.6rem}.amount{padding:10px 14px;border-radius:16px;background:var(--text);color:var(--bg);font-weight:900}.done{background:var(--green);color:#fff}.celebrate{padding:18px;border-radius:24px;background:linear-gradient(135deg,#1dcf86,#1aa96c);color:#fff;text-align:center;box-shadow:var(--shadow)}
+    .receipt-list{display:grid;gap:12px}.receipt{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px dashed var(--border)}.receipt:last-child{border-bottom:0}
+    .footer{text-align:center;color:var(--muted);padding:20px 0}
+    @media (max-width:920px){.hero-grid,.kid-area,.step{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 1}.nav{grid-template-columns:repeat(2,1fr)}.step{justify-items:start}.amount{justify-self:start}}
+    @media (max-width:640px){.wrap{padding:12px}.hero{padding:22px}.nav{position:static}.headline{flex-direction:column;align-items:flex-start}.brand span:last-child{display:none}}
+  </style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 42C10 25 23 12 40 12H52V24H40C30 24 22 32 22 42V52H10V42Z" fill="white"/><path d="M24 40C24 30 32 22 42 22H54V34H42C39 34 36 37 36 40V52H24V40Z" fill="#FFE27A"/></svg></div><span>Family Money Story</span></div>
+    <button class="toggle" type="button" data-theme-toggle aria-label="Switch theme">🌙</button>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="eyebrow">🏔️ Pigeon Forge trip · made for kids and grown-ups</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Show your 7-year-old where the trip money went.</h1>
+          <p>This design turns numbers into a story: what we bought, why fun costs money, who helped pay, and how sharing fairly works. The goal is not just showing totals, but helping a child feel grateful for the experience.</p>
+          <div class="hero-badges"><div class="hero-badge">💰 Total spent $7,112</div><div class="hero-badge">🎢 Activities $3,759</div><div class="hero-badge">🏠 Cabin $3,353</div></div>
+        </div>
+        <aside class="hero-side">
+          <div class="sub" style="color:rgba(255,255,255,.8)">TRIP TREASURE CHEST</div>
+          <div class="big-number">$7,112</div>
+          <div>That is the whole bucket of money used to make the trip happen.</div>
+          <div class="mini-legend"><div class="box"><strong>🟢 Settled</strong><br><span>Finished paying</span></div><div class="box"><strong>🔴 Still owes</strong><br><span>Needs to pay later</span></div></div>
+        </aside>
+      </div>
+    </section>
+    <nav class="nav" aria-label="Sections"><button class="tab active" data-tab="why">❤️ Why it matters</button><button class="tab" data-tab="families">👨‍👩‍👧 Families</button><button class="tab" data-tab="settlement">💸 Settlement</button><button class="tab" data-tab="fun">🎡 Fun costs</button></nav>
+
+    <section id="why" class="panel active section">
+      <div class="grid">
+        <article class="card span-4 kpi"><div class="emoji">🎟️</div><div><span class="sub">Activities</span><strong>$3,759</strong><span class="sub">Rides, aquarium, museum, water park</span></div></article>
+        <article class="card span-4 kpi"><div class="emoji">🏠</div><div><span class="sub">Cabin</span><strong>$3,353</strong><span class="sub">Sleep, rest, family time</span></div></article>
+        <article class="card span-4 kpi"><div class="emoji">🍽️</div><div><span class="sub">Meals</span><strong>$1,341</strong><span class="sub">Feeding everyone together</span></div></article>
+
+        <article class="card span-7">
+          <div class="headline"><h2>Tell the story, not just the number</h2><div class="sub">Best way to build appreciation</div></div>
+          <div class="storyline">
+            <div class="line"><div class="icon">🏠</div><div><strong>First, we needed a place to stay.</strong><div class="sub">The cabin gave everyone beds, bathrooms, and room to play.</div></div><div class="pill">$3,353</div></div>
+            <div class="line"><div class="icon">🎢</div><div><strong>Then we paid for fun things.</strong><div class="sub">Rides, museums, fish, and splash time all cost real money.</div></div><div class="pill">$3,759</div></div>
+            <div class="line"><div class="icon">🍕</div><div><strong>We also paid for food.</strong><div class="sub">Eating together was part of the trip too.</div></div><div class="pill">$1,341</div></div>
+            <div class="line"><div class="icon">🤝</div><div><strong>Adults shared the cost.</strong><div class="sub">Different families paid different parts so the whole trip could happen.</div></div><div class="pill">Shared</div></div>
+          </div>
+        </article>
+
+        <article class="card span-5">
+          <div class="headline"><h2>Child-friendly lessons</h2><div class="sub">What your son should notice</div></div>
+          <div class="kid-area">
+            <div class="kid-card"><div class="big">🙏</div><strong>Fun is not free</strong><div class="sub">Trips are built by planning and paying.</div></div>
+            <div class="kid-card"><div class="big">👨‍👩‍👧‍👦</div><strong>Family helps family</strong><div class="sub">Adults work together to make memories.</div></div>
+            <div class="kid-card"><div class="big">💛</div><strong>Be thankful</strong><div class="sub">A great trip is a gift from many people.</div></div>
+          </div>
+        </article>
+
+        <article class="card span-12">
+          <div class="headline"><h2>Big picture bars</h2><div class="sub">Easy for kids to compare</div></div>
+          <div class="compare">
+            <div class="compare-row"><div class="compare-top"><span>🎢 Activities</span><span>$3,759</span></div><div class="track"><div class="fill" style="width:53%;background:linear-gradient(90deg,var(--purple),var(--pink))"></div></div></div>
+            <div class="compare-row"><div class="compare-top"><span>🏠 Cabin</span><span>$3,353</span></div><div class="track"><div class="fill" style="width:47%;background:linear-gradient(90deg,var(--yellow),var(--orange))"></div></div></div>
+            <div class="compare-row"><div class="compare-top"><span>🍽️ Meals</span><span>$1,341</span></div><div class="track"><div class="fill" style="width:19%;background:linear-gradient(90deg,var(--green),var(--blue))"></div></div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="families" class="panel section">
+      <div class="card">
+        <div class="headline"><h2>Who helped pay</h2><div class="sub">Show teamwork, not blame</div></div>
+        <div class="family-grid">
+          <article class="family"><div class="family-top"><div><h3>Ankit</h3><div class="sub">Paid a lot up front</div></div><div class="avatar">🦸</div></div><div class="chips"><span class="chip">Paid $3,503</span><span class="chip">Fair share $1,514</span></div><div class="money pos">+$1,989</div></article>
+          <article class="family"><div class="family-top"><div><h3>Ashish</h3><div class="sub">Also paid a lot</div></div><div class="avatar">🚀</div></div><div class="chips"><span class="chip">Paid $2,409</span><span class="chip">Fair share $1,546</span></div><div class="money pos">+$863</div></article>
+          <article class="family"><div class="family-top"><div><h3>Montu</h3><div class="sub">Was short before</div></div><div class="avatar">🎯</div></div><div class="chips"><span class="chip">Paid $1,048</span><span class="chip">Short by $360</span></div><div class="money settled">✅ Settled with Ankit</div></article>
+          <article class="family"><div class="family-top"><div><h3>Saunak</h3><div class="sub">Was short before</div></div><div class="avatar">🌈</div></div><div class="chips"><span class="chip">Paid $152</span><span class="chip">Short by $1,100</span></div><div class="money settled">✅ Settled with Ankit</div></article>
+          <article class="family"><div class="family-top"><div><h3>Amrish</h3><div class="sub">Still to settle</div></div><div class="avatar">🧩</div></div><div class="chips"><span class="chip">Paid $0</span><span class="chip">Owes $1,520</span></div><div class="money neg">-$1,520</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="settlement" class="panel section">
+      <div class="card">
+        <div class="headline"><h2>What is already finished</h2><div class="sub">Updated with your latest note</div></div>
+        <div class="journey">
+          <div class="step"><div><div class="person">Montu</div><div class="help">Finished his balance with Ankit</div></div><div class="arrow">➡️</div><div><div class="person">Ankit</div><div class="help">Received payment</div></div><div class="amount done">PAID</div></div>
+          <div class="step"><div><div class="person">Saunak</div><div class="help">Finished his balance with Ankit</div></div><div class="arrow">➡️</div><div><div class="person">Ankit</div><div class="help">Received payment</div></div><div class="amount done">PAID</div></div>
+          <div class="step"><div><div class="person">Amrish</div><div class="help">Still needs to settle</div></div><div class="arrow">➡️</div><div><div class="person">Ankit + Ashish</div><div class="help">Planned split remains</div></div><div class="amount">$1,520</div></div>
+        </div>
+      </div>
+      <div class="celebrate"><h2 style="font-size:var(--text-xl);margin-bottom:8px">🎉 Great lesson for kids</h2><p>Two families already finished paying back. That shows responsibility, fairness, and teamwork after the fun was over.</p></div>
+    </section>
+
+    <section id="fun" class="panel section">
+      <div class="card">
+        <div class="headline"><h2>What the trip money bought</h2><div class="sub">This is the most "wow" section for a 7-year-old</div></div>
+        <div class="receipt-list">
+          <div class="receipt"><div class="icon">🎢</div><div><strong>Kids rides</strong><div class="sub">The Island</div></div><div class="pill">$170</div></div>
+          <div class="receipt"><div class="icon">🍕</div><div><strong>Mellow Mushroom</strong><div class="sub">Lunch + extra pizza</div></div><div class="pill">$212</div></div>
+          <div class="receipt"><div class="icon">🍜</div><div><strong>North Chinese</strong><div class="sub">Family dinner</div></div><div class="pill">$240</div></div>
+          <div class="receipt"><div class="icon">🚠</div><div><strong>Skylift Park</strong><div class="sub">Mountain ride view</div></div><div class="pill">$636</div></div>
+          <div class="receipt"><div class="icon">💦</div><div><strong>Water Park</strong><div class="sub">Splash day</div></div><div class="pill">$412</div></div>
+          <div class="receipt"><div class="icon">🚢</div><div><strong>Titanic Museum</strong><div class="sub">Museum visit</div></div><div class="pill">$514</div></div>
+          <div class="receipt"><div class="icon">🐠</div><div><strong>Ripley's Aquarium</strong><div class="sub">Fish and sea life</div></div><div class="pill">$597</div></div>
+          <div class="receipt"><div class="icon">🏠</div><div><strong>Cabin rental</strong><div class="sub">The home base for everyone</div></div><div class="pill">$3,353</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">Built to help a child understand cost, sharing, gratitude, and responsibility.</footer>
+</div>
+<script>
+const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelectorAll('.panel')];tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active'));panels.forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');window.scrollTo({top:btn.parentElement.offsetTop-12,behavior:'smooth'})}));const toggle=document.querySelector('[data-theme-toggle]');let theme='light';const paint=()=>{document.documentElement.setAttribute('data-theme',theme);toggle.textContent=theme==='light'?'🌙':'☀️';toggle.setAttribute('aria-label',theme==='light'?'Switch to dark mode':'Switch to light mode')};toggle.addEventListener('click',()=>{theme=theme==='light'?'dark':'light';paint()});paint();
+</script>
+</body>
+</html>
