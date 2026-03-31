@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pigeon Forge 2026 — Expense Split</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f1f5f9;color:#334155;min-height:100vh;padding-bottom:60px}
+.g{color:#22c55e}.r{color:#ef4444}.a{color:#f59e0b}
+.bg-g{background:#22c55e}.bg-r{background:#ef4444}.bg-a{background:#f59e0b}
+.bgf-g{background:#f0fdf4}.bgf-r{background:#fef2f2}
+
+.hero{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;text-align:center;padding:28px 20px 20px}
+.eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:4px}
+.hero h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.meta{font-size:12px;opacity:0.7;margin-bottom:16px}
+.bigstat{display:inline-block;background:rgba(255,255,255,0.1);border-radius:16px;padding:10px 24px;margin-bottom:4px}
+.bigstat .l{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;display:block}
+.bigstat .v{font-size:42px;font-weight:900;line-height:1}
+.bigstat .s{font-size:12px;opacity:0.7}
+.rowstats{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.mstat{background:rgba(255,255,255,0.08);border-radius:10px;padding:7px 12px;text-align:center}
+.mstat .l{font-size:9px;opacity:0.6;text-transform:uppercase;letter-spacing:1px;display:block}
+.mstat .v{font-size:15px;font-weight:800;display:block}
+
+.c{max-width:600px;margin:0 auto;padding:0 16px}
+
+.tabs{display:flex;background:#fff;border-radius:14px;padding:4px;gap:3px;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:600;color:#94a3b8;border-radius:10px;cursor:pointer;transition:all .2s;border:none;background:none}
+.tab.active{background:#1e293b;color:#fff}
+.tc{display:none}.tc.on{display:block}
+
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.ctl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin-bottom:10px}
+
+.stat{background:#fff;border-radius:14px;padding:18px;margin-bottom:12px;text-align:center;border:3px solid #22c55e;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.stat.owes{border-color:#ef4444}
+.statl{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:2px}
+.statbig{font-size:48px;font-weight:900;line-height:1;margin:6px 0}
+.statbig.g{color:#22c55e}
+.statbig.r{color:#ef4444}
+.statd{font-size:13px;color:#94a3b8;margin-bottom:14px}
+.prog{background:#e2e8f0;border-radius:10px;height:16px;margin-bottom:5px;overflow:hidden}
+.progfill{height:100%;border-radius:10px;min-width:6px}
+.progfill.g{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.progfill.r{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.progfill.a{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.proglabels{display:flex;justify-content:space-between;font-size:10px;color:#94a3b8}
+
+.legend{display:flex;justify-content:center;gap:12px;margin-bottom:10px;font-size:11px;color:#94a3b8}
+.legitem{display:flex;align-items:center;gap:4px}
+.legdot{width:10px;height:10px;border-radius:50%}
+
+.fb{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;box-shadow:0 2px 10px rgba(0,0,0,0.06);border-left:4px solid;transition:transform .15s}
+.fb:hover{transform:translateX(3px)}
+.fb.g{border-color:#22c55e}.fb.r{border-color:#ef4444}
+.fav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0}
+.fb.g .fav{background:#f0fdf4;color:#22c55e}
+.fb.r .fav{background:#fef2f2;color:#ef4444}
+.finfo{flex:1;min-width:0}
+.fname{font-size:14px;font-weight:700;color:#1e293b}
+.fmembers{font-size:10px;color:#94a3b8;margin-top:1px}
+.fbal{font-size:18px;font-weight:900;text-align:right}
+.fb.g .fbal{color:#22c55e}.fb.r .fbal{color:#ef4444}
+.fpd{font-size:10px;color:#94a3b8;text-align:right}
+
+.sc{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.sh{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;padding:12px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.pr{background:#fff;display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:8px}
+.pr:last-child{border-bottom:none}
+.pf{flex:1}.pf .n{font-size:12px;font-weight:700;color:#ef4444}.pf .d{font-size:10px;color:#94a3b8}
+.arr{font-size:16px;color:#cbd5e1}
+.pt{flex:1;text-align:right}.pt .n{font-size:12px;font-weight:700;color:#22c55e}.pt .d{font-size:10px;color:#94a3b8}
+.pa{background:#1e293b;color:#fff;border-radius:8px;padding:5px 10px;font-size:14px;font-weight:800;white-space:nowrap}
+.done{background:#f0fdf4;border-bottom:none}
+.done .arr{color:#22c55e}
+
+.pc{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.ph{padding:12px 14px}
+.ph.g{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.ph.r{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+.pn{font-size:15px;font-weight:800}
+.pf2{font-size:11px;opacity:0.85;margin-top:1px}
+.pb2{font-size:28px;font-weight:900;margin-top:5px;display:flex;align-items:baseline;gap:4px}
+.pb2 span{font-size:13px;font-weight:600;opacity:0.8}
+.pb2 .ng{font-size:13px;font-weight:600;opacity:0.8}
+.pb3{font-size:26px;font-weight:900;margin-top:4px;color:rgba(255,255,255,0.9)}
+.pb3 span{font-size:13px;font-weight:600;opacity:0.75}
+.pbd{padding:2px 14px 14px}
+.prow{display:flex;justify-content:space-between;padding:6px 0;font-size:12px;border-bottom:1px solid #f1f5f9}
+.prow:last-child{border-bottom:none}
+.prow .lb{color:#64748b}
+.prow .am{font-weight:600}
+.prow.sub{border-top:2px solid #e2e8f0;margin-top:4px;padding-top:10px;font-weight:700;color:#1e293b}
+.prow.sub .am{color:#1e293b}
+.prow.paid .am{color:#f59e0b}
+.prow.net{font-size:16px;font-weight:800;padding:10px 0 0;border:none}
+.prow.net.g .am{color:#22c55e}
+.prow.net.r .am{color:#ef4444}
+
+.ri{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.ri:last-of-type{border-bottom:none}
+.rn{width:24px;height:24px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.ri2{font-size:22px;flex-shrink:0}
+.ri3{flex:1}.ri3 .n{font-size:13px;font-weight:600;color:#1e293b}.ri3 .p{font-size:11px;color:#94a3b8}
+.rc{font-size:15px;font-weight:800;color:#1e293b}
+.tr{background:#1e293b;color:#fff;border-radius:10px;padding:12px 14px;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+.tr .l{font-size:13px;font-weight:700}
+.tr .v{font-size:18px;font-weight:900}
+
+.ptog{text-align:center;margin-bottom:12px}
+.ptog button{background:none;border:2px solid #e2e8f0;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;padding:8px 16px;border-radius:100px;transition:all .2s}
+.ptog button:hover{border-color:#1e293b;color:#1e293b}
+.pg{display:none;grid-template-columns:1fr 1fr;gap:6px}
+.pg.on{display:grid}
+.pi{background:#f8fafc;padding:10px;border-radius:10px}
+.pi .a{font-size:13px;margin-bottom:3px}
+.pi .d{font-size:11px;color:#64748b;line-height:1.4}
+
+.footer{text-align:center;color:#cbd5e1;font-size:11px;padding:20px;line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+<div class="eyebrow">Pigeon Forge, TN · March 26–29, 2026</div>
+<h1>💸 Trip Expense Split</h1>
+<div class="meta">18 people · 5 families · 3521 Peggy Lane</div>
+<div class="bigstat">
+<span class="l">Grand Total</span>
+<span class="v">$7,112</span>
+<span class="s">Fair share: $1,422 per family</span>
+</div>
+<div class="rowstats">
+<div class="mstat"><span class="l">Activities</span><span class="v">$3,759</span></div>
+<div class="mstat"><span class="l">Cabin</span><span class="v">$3,353</span></div>
+<div class="mstat"><span class="l">Per Person</span><span class="v">$395</span></div>
+</div>
+</div>
+
+<div class="c">
+
+<!-- TABS -->
+<div class="tabs">
+<button class="tab active" onclick="switchTab('overview')">📊 Overview</button>
+<button class="tab" onclick="switchTab('myshare')">👤 My Share</button>
+<button class="tab" onclick="switchTab('receipts')">🧾 Receipts</button>
+</div>
+
+<!-- ═══ OVERVIEW ═══ -->
+<div id="overview" class="tc on">
+
+<!-- YOUR STATUS -->
+<div class="stat">
+<div class="statl">ANKIT PATEL — YOUR STATUS</div>
+<div class="statbig g">+$1,989</div>
+<div class="statd">You GET BACK $1,989 from the group</div>
+<div class="prog"><div class="progfill g" style="width:100%"></div></div>
+<div class="proglabels"><span>Paid $3,503</span><span>Fair share $1,514</span></div>
+</div>
+
+<div class="legend">
+<div class="legitem"><div class="legdot" style="background:#22c55e"></div> Gets money back</div>
+<div class="legitem"><div class="legdot" style="background:#ef4444"></div> Owes money</div>
+</div>
+
+<!-- FAMILY BALANCES -->
+<div class="card">
+<div class="ctl">👨‍👩‍👧‍👦 Family Balances</div>
+
+<div class="fb g">
+<div class="fav">A</div>
+<div class="finfo">
+<div class="fname">Ankit Patel</div>
+<div class="fmembers">4 people · 2 adults + 2 kids + 1 toddler</div>
+</div>
+<div>
+<div class="fbal">+$1,989</div>
+<div class="fpd">→ Receives</div>
+</div>
+</div>
+
+<div class="fb g">
+<div class="fav">A</div>
+<div class="finfo">
+<div class="fname">Ashish Patel</div>
+<div class="fmembers">4 people · 2 adults + 2 kids</div>
+</div>
+<div>
+<div class="fbal">+$863</div>
+<div class="fpd">→ Receives</div>
+</div>
+</div>
+
+<div class="fb r">
+<div class="fav">A</div>
+<div class="finfo">
+<div class="fname">Amrish Bhai</div>
+<div class="fmembers">4 people · 2 adults + 2 kids</div>
+</div>
+<div>
+<div class="fbal">−$1,520</div>
+<div class="fpd">← Owes</div>
+</div>
+</div>
+
+<div class="fb r">
+<div class="fav">M</div>
+<div class="finfo">
+<div class="fname">Mon2 Bhai</div>
+<div class="fmembers">3 people · 2 adults + 1 kid</div>
+</div>
+<div>
+<div class="fbal">−$360</div>
+<div class="fpd">← Owes</div>
+</div>
+</div>
+
+<div class="fb r">
+<div class="fav">S</div>
+<div class="finfo">
+<div class="fname">Saunak Patel</div>
+<div class="fmembers">3 people · 2 adults + 1 toddler</div>
+</div>
+<div>
+<div class="fbal">−$1,100</div>
+<div class="fpd">← Owes</div>
+</div>
+</div>
+</div>
+
+<!-- SETTLEMENT FLOW -->
+<div class="sc">
+<div class="sh">💸 Who Pays Whom — 3 Simple Transfers</div>
+<div class="pr">
+<div class="pf"><div class="n">Amrish Bhai</div><div class="d">Owes $1,520</div></div>
+<div class="arr">→</div>
+<div class="pt"><div class="n">Ankit Patel</div><div class="d">Gets $1,520</div></div>
+<div class="pa">$1,520</div>
+</div>
+<div class="pr">
+<div class="pf"><div class="n">Saunak Patel</div><div class="d">Owes $1,100</div></div>
+<div class="arr">→</div>
+<div class="pt"><div class="n">Ankit Patel</div><div class="d">Gets $1,100</div></div>
+<div class="pa">$1,100</div>
+</div>
+<div class="pr">
+<div class="pf"><div class="n">Mon2 Bhai</div><div class="d">Owes $360</div></div>
+<div class="arr">→</div>
+<div class="pt"><div class="n">Ashish Patel</div><div class="d">Gets $360</div></div>
+<div class="pa">$360</div>
+</div>
+<div class="pr done">
+<div class="pf"><div class="n" style="color:#16a34a">✅ Amrish → Ankit $1,520</div><div class="d">Done!</div></div>
+<div class="arr" style="color:#22c55e">✓</div>
+<div class="pt"><div class="n" style="color:#16a34a">✅ Everyone settled</div><div class="d">All balances = $0</div></div>
+<div class="pa" style="background:#22c55e">= $0</div>
+</div>
+</div>
+
+<!-- PRICING -->
+<div class="ptog">
+<button onclick="document.getElementById('pg').classList.toggle('on')">📋 See How Prices Were Calculated ▼</button>
+</div>
+<div id="pg" class="pg">
+<div class="pi"><div class="a">🚢 Titanic Museum</div><div class="d">Adult $37.99 · Child 5-12 $12.99 · Under 5 FREE · Tax included</div></div>
+<div class="pi"><div class="a">🚠 Skylift Park</div><div class="d">Adult $39.95 · Junior 6-11 $25.95 · Under 5 FREE · Tax included</div></div>
+<div class="pi"><div class="a">💧 Water Park</div><div class="d">Adult $35 · Child $25 · Tax included</div></div>
+<div class="pi"><div class="a">🐠 Ripley's Aquarium</div><div class="d">Adult $35.99 · Child 6-11 $20.99 · Under 5 $10.99</div></div>
+<div class="pi"><div class="a">🎢 Island Rides</div><div class="d">$28.33/kid × 6 kids · Varni free</div></div>
+<div class="pi"><div class="a">🍽️ Meals</div><div class="d">17 people ($1,341) · Birthday dinner: Ashish treated 🎂</div></div>
+</div>
+
+</div><!-- /overview -->
+
+<!-- ═══ MY SHARE ═══ -->
+<div id="myshare" class="tc">
+
+<!-- ANKIT -->
+<div class="pc">
+<div class="ph g">
+<div class="pn">ANKIT PATEL</div>
+<div class="pf2">4 people · 2 adults + 2 kids + 1 toddler</div>
+<div class="pb2">+$1,989 <span class="ng">🎉 GETS BACK</span></div>
+</div>
+<div class="pbd">
+<div class="prow"><span class="lb">🍕 Meals</span><span class="am">$315.53</span></div>
+<div class="prow"><span class="lb">🚢 Titanic (2 adults + Nirmaan)</span><span class="am">$99.86</span></div>
+<div class="prow"><span class="lb">🚠 Skylift (2 adults + Nirmaan, Tuhi free)</span><span class="am">$105.85</span></div>
+<div class="prow"><span class="lb">💧 Water Park (2 adults + 2 kids)</span><span class="am">$120.00</span></div>
+<div class="prow"><span class="lb">🐠 Ripley's (2 adults + Nirmaan + Tuhi)</span><span class="am">$127.39</span></div>
+<div class="prow"><span class="lb">🎢 Island Rides (Nirmaan + Tuhi)</span><span class="am">$56.67</span></div>
+<div class="prow"><span class="lb">🍦 Ben & Jerry's</span><span class="am">$18.00</span></div>
+<div class="prow sub"><span class="lb">Activities + Meals</span><span class="am">$843.30</span></div>
+<div class="prow"><span class="lb">🏠 Cabin ($3,353 ÷ 5)</span><span class="am">$670.57</span></div>
+<div class="prow paid"><span class="lb">💸 Fair Share (you owe)</span><span class="am">$1,513.87</span></div>
+<div class="prow paid"><span class="lb">✅ Actually Paid</span><span class="am">$3,502.87</span></div>
+<div class="prow net g"><span class="lb">YOU GET BACK</span><span class="am">+$1,989.01</span></div>
+</div>
+</div>
+
+<!-- ASHISH -->
+<div class="pc">
+<div class="ph g">
+<div class="pn">ASHISH PATEL</div>
+<div class="pf2">4 people · 2 adults + 2 kids</div>
+<div class="pb2">+$863 <span class="ng">🎉 GETS BACK</span></div>
+</div>
+<div class="pbd">
+<div class="prow"><span class="lb">🍕 Meals</span><span class="am">$315.53</span></div>
+<div class="prow"><span class="lb">🚢 Titanic (2 adults + Suhradam + Nirmaan)</span><span class="am">$114.44</span></div>
+<div class="prow"><span class="lb">🚠 Skylift (2 adults + Suhradam + Nirmaan)</span><span class="am">$145.80</span></div>
+<div class="prow"><span class="lb">💧 Water Park (Hiral + 2 kids)</span><span class="am">$85.00</span></div>
+<div class="prow"><span class="lb">🐠 Ripley's (2 adults + Suhradam + Nirmaan)</span><span class="am">$139.65</span></div>
+<div class="prow"><span class="lb">🎢 Island Rides (Suhradam + Nirmaan)</span><span class="am">$56.67</span></div>
+<div class="prow"><span class="lb">🍦 Ben & Jerry's</span><span class="am">$18.00</span></div>
+<div class="prow sub"><span class="lb">Activities + Meals</span><span class="am">$875.08</span></div>
+<div class="prow"><span class="lb">🏠 Cabin</span><span class="am">$670.57</span></div>
+<div class="prow paid"><span class="lb">💸 Fair Share (you owe)</span><span class="am">$1,545.65</span></div>
+<div class="prow paid"><span class="lb">✅ Actually Paid</span><span class="am">$2,408.56</span></div>
+<div class="prow net g"><span class="lb">YOU GET BACK</span><span class="am">+$862.90</span></div>
+</div>
+</div>
+
+<!-- AMRISH -->
+<div class="pc">
+<div class="ph r">
+<div class="pn">AMRISH BHAI</div>
+<div class="pf2">4 people · 2 adults + 2 kids</div>
+<div class="pb3">−$1,520 <span>😬 OWES</span></div>
+</div>
+<div class="pbd">
+<div class="prow"><span class="lb">🍕 Meals</span><span class="am">$315.53</span></div>
+<div class="prow"><span class="lb">🚢 Titanic (2 adults + Divya + Nirmani)</span><span class="am">$114.44</span></div>
+<div class="prow"><span class="lb">🚠 Skylift (2 adults + Divya + Nirmani)</span><span class="am">$145.80</span></div>
+<div class="prow"><span class="lb">💧 Water Park (Suyogi + 2 kids)</span><span class="am">$85.00</span></div>
+<div class="prow"><span class="lb">🐠 Ripley's (2 adults + Nirmani)</span><span class="am">$113.93</span></div>
+<div class="prow"><span class="lb">🎢 Island Rides (Divya + Nirmani)</span><span class="am">$56.67</span></div>
+<div class="prow"><span class="lb">🍦 Ben & Jerry's</span><span class="am">$18.00</span></div>
+<div class="prow sub"><span class="lb">Activities + Meals</span><span class="am">$849.37</span></div>
+<div class="prow"><span class="lb">🏠 Cabin</span><span class="am">$670.57</span></div>
+<div class="prow paid"><span class="lb">💸 Fair Share (you owe)</span><span class="am">$1,519.94</span></div>
+<div class="prow paid"><span class="lb">❌ Actually Paid</span><span class="am" style="color:#ef4444">$0.00</span></div>
+<div class="prow net r"><span class="lb">YOU OWE</span><span class="am">−$1,519.94</span></div>
+</div>
+</div>
+
+<!-- MON2 -->
+<div class="pc">
+<div class="ph r">
+<div class="pn">MON2 BHAI</div>
+<div class="pf2">3 people · 2 adults + 1 kid</div>
+<div class="pb3">−$360 <span>😐 OWES</span></div>
+</div>
+<div class="pbd">
+<div class="prow"><span class="lb">🍕 Meals (3 × $78.88)</span><span class="am">$236.65</span></div>
+<div class="prow"><span class="lb">🚢 Titanic (2 adults + Darshi)</span><span class="am">$99.86</span></div>
+<div class="prow"><span class="lb">🚠 Skylift (2 adults + Darshi)</span><span class="am">$145.80</span></div>
+<div class="prow"><span class="lb">💧 Water Park (Mon2 + Chaitali + Darshi)</span><span class="am">$95.00</span></div>
+<div class="prow"><span class="lb">🐠 Ripley's (2 adults + Darshi)</span><span class="am">$113.93</span></div>
+<div class="prow"><span class="lb">🎢 Island Rides (Darshi)</span><span class="am">$28.33</span></div>
+<div class="prow"><span class="lb">🍦 Ben & Jerry's</span><span class="am">$18.00</span></div>
+<div class="prow sub"><span class="lb">Activities + Meals</span><span class="am">$737.57</span></div>
+<div class="prow"><span class="lb">🏠 Cabin</span><span class="am">$670.57</span></div>
+<div class="prow paid"><span class="lb">💸 Fair Share (you owe)</span><span class="am">$1,408.14</span></div>
+<div class="prow paid"><span class="lb">✅ Actually Paid</span><span class="am">$1,048.00</span></div>
+<div class="prow net r"><span class="lb">YOU OWE</span><span class="am">−$360.14</span></div>
+</div>
+</div>
+
+<!-- SAUNAK -->
+<div class="pc">
+<div class="ph r">
+<div class="pn">SAUNAK PATEL</div>
+<div class="pf2">3 people · 2 adults + 1 toddler</div>
+<div class="pb3">−$1,100 <span>😬 OWES</span></div>
+</div>
+<div class="pbd">
+<div class="prow"><span class="lb">🍕 Meals (3 × $78.88)</span><span class="am">$236.65</span></div>
+<div class="prow"><span class="lb">🚢 Titanic (2 adults, kids free)</span><span class="am">$85.28</span></div>
+<div class="prow"><span class="lb">🚠 Skylift (2 adults, Varni free)</span><span class="am">$79.90</span></div>
+<div class="prow"><span class="lb">💧 Water Park (Saunak + Varni)</span><span class="am">$60.00</span></div>
+<div class="prow"><span class="lb">🐠 Ripley's (2 adults + Varni)</span><span class="am">$101.67</span></div>
+<div class="prow"><span class="lb">🎢 Island Rides</span><span class="am">$0.00</span></div>
+<div class="prow"><span class="lb">🍦 Ben & Jerry's</span><span class="am">$18.00</span></div>
+<div class="prow sub"><span class="lb">Activities + Meals</span><span class="am">$581.50</span></div>
+<div class="prow"><span class="lb">🏠 Cabin</span><span class="am">$670.57</span></div>
+<div class="prow paid"><span class="lb">💸 Fair Share (you owe)</span><span class="am">$1,252.07</span></div>
+<div class="prow paid"><span class="lb">✅ Actually Paid</span><span class="am">$152.00</span></div>
+<div class="prow net r"><span class="lb">YOU OWE</span><span class="am">−$1,100.07</span></div>
+</div>
+</div>
+
+</div><!-- /myshare -->
+
+<!-- ═══ RECEIPTS ═══ -->
+<div id="receipts" class="tc">
+
+<div class="card">
+<div class="ctl">🧾 All Receipts — 12 Expenses</div>
+
+<div class="ri"><div class="rn">1</div><div class="ri2">🎢</div><div class="ri3"><div class="n">The Island — Kids Rides</div></div><div class="rc">$170.00</div></div>
+<div class="ri"><div class="rn">2</div><div class="ri2">🍕</div><div class="ri3"><div class="n">Mellow Mushroom (Lunch)</div><div class="p">Paid by Ankit</div></div><div class="rc">$150.00</div></div>
+<div class="ri"><div class="rn">3</div><div class="ri2">🍕</div><div class="ri3"><div class="n">Mellow Mushroom (Extra)</div><div class="p">Paid by Saunak</div></div><div class="rc">$62.00</div></div>
+<div class="ri"><div class="rn">4</div><div class="ri2">🍜</div><div class="ri3"><div class="n">North Chinese Restaurant</div><div class="p">Paid by Ashish</div></div><div class="rc">$240.00</div></div>
+<div class="ri"><div class="rn">5</div><div class="ri2">🚠</div><div class="ri3"><div class="n">Gatlinburg Skylift Park</div><div class="p">Paid by Mon2</div></div><div class="rc">$636.00</div></div>
+<div class="ri"><div class="rn">6</div><div class="ri2">💧</div><div class="ri3"><div class="n">Wild Bear Falls Water Park</div><div class="p">Paid by Mon2</div></div><div class="rc">$412.00</div></div>
+<div class="ri"><div class="rn">7</div><div class="ri2">🍦</div><div class="ri3"><div class="n">Ben & Jerry's Ice Cream</div><div class="p">Paid by Saunak</div></div><div class="rc">$90.00</div></div>
+<div class="ri"><div class="rn">8</div><div class="ri2">🍛</div><div class="ri3"><div class="n">Indian Restaurant (Dinner)</div><div class="p">Paid by Ashish</div></div><div class="rc">$555.00</div></div>
+<div class="ri"><div class="rn">9</div><div class="ri2">🚢</div><div class="ri3"><div class="n">Titanic Museum ⭐</div><div class="p">Paid by Ashish</div></div><div class="rc">$513.88</div></div>
+<div class="ri"><div class="rn">10</div><div class="ri2">🐠</div><div class="ri3"><div class="n">Ripley's Aquarium</div><div class="p">Paid by Ashish</div></div><div class="rc">$596.56</div></div>
+<div class="ri"><div class="rn">11</div><div class="ri2">🍝</div><div class="ri3"><div class="n">Olive Garden (Dinner)</div><div class="p">Paid by Ashish</div></div><div class="rc">$334.00</div></div>
+<div class="ri"><div class="rn">12</div><div class="ri2">🏠</div><div class="ri3"><div class="n">Cabin Rental</div><div class="p">Paid by Ankit</div></div><div class="rc">$3,352.87</div></div>
+
+<div class="tr">
+<div class="l">GRAND TOTAL</div>
+<div class="v">$7,112.31</div>
+</div>
+<div style="font-size:11px;color:#94a3b8;margin-top:8px;padding:0 2px">⭐ Titanic verified: 10 adults @ $37.99 + 6 kids @$12.99 + 2 toddlers free + $56.04 tax
+</div>
+</div>
+
+<div class="footer">
+<strong>Pigeon Forge, TN — March 26–29, 2026</strong><br>
+18 people · 5 families · Split with actual ticket prices & taxes
+</div>
+
+</div><!-- /c -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.tc').forEach(function(c){c.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(t){
+    if(t.textContent.includes('Overview')&&id==='overview'||
+       t.textContent.includes('My Share')&&id==='myshare'||
+       t.textContent.includes('Receipts')&&id==='receipts') t.classList.add('active');
+  });
+  document.getElementById(id).classList.add('on');
+}
+</script>
+
+</body>
+</html>
